@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><AssemblyName>SpendMeMaybe</AssemblyName><DefineConstants Condition="'$(Distribution)' == 'true'">$(DefineConstants);DISTRIBUTION</DefineConstants></PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Dalamud;Dalamud.Bindings.ImGui;Lumina;Lumina.Excel;FFXIVClientStructs;InteropGenerator.Runtime"><HintPath>$(DalamudLibPath)/%(Identity).dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="MinasisUI"><HintPath>../vendor/MinasisUI/lib/1.0.10/MinasisUI.dll</HintPath><Private>true</Private></Reference>
+    <None Include="SpendMeMaybe.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../images/icon.png" Link="images/icon.png" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,14 @@
+<Project>
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <TargetPlatformMoniker>Windows,Version=7.0</TargetPlatformMoniker>
+    <Nullable>enable</Nullable><ImplicitUsings>enable</ImplicitUsings><LangVersion>latest</LangVersion>
+    <PlatformTarget>x64</PlatformTarget><AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Version>0.1.45</Version><AssemblyVersion>0.1.45.0</AssemblyVersion><Deterministic>true</Deterministic>
+    <PathMap>$(MSBuildThisFileDirectory)=/_/SpendMeMaybe/</PathMap>
+    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory).work/obj/$(MSBuildProjectName)/</BaseIntermediateOutputPath>
+    <BaseOutputPath>$(MSBuildThisFileDirectory)artifacts/bin/$(MSBuildProjectName)/</BaseOutputPath>
+    <DalamudLibPath Condition="'$(DalamudLibPath)' == ''">$(MSBuildThisFileDirectory).dependencies/Dalamud-15.0.3.7</DalamudLibPath>
+  </PropertyGroup>
+</Project>
+

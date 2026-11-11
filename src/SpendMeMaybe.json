@@ -1,0 +1,9 @@
+{
+  "Author": "min", "Name": "Spend Me Maybe", "InternalName": "SpendMeMaybe",
+  "AssemblyVersion": "0.1.45.0", "DalamudApiLevel": 15, "ApplicableVersion": "any",
+  "Punchline": "貨幣・交換アイテムの所持数を表示",
+  "Description": "所持数としきい値をオーバーレイ表示し、アイコンクリックで登録コマンドを実行します。/spendmemaybe で設定を開きます。",
+  "RepoUrl": "https://github.com/minasis-min/SpendMeMaybe",
+  "Tags": ["currency", "overlay", "items"]
+}
+

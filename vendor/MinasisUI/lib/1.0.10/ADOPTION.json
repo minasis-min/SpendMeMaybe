@@ -1,0 +1,201 @@
+{
+  "Version": "1.0.10",
+  "AssemblyVersion": "1.0.10.0",
+  "Source": "MinasisUI local development source",
+  "DalamudReference": "Dalamud-15.0.3.6",
+  "DllSHA256": "4D50B811B09FF84FA3446C295863D352F476A0CC6C6C21A0D6600D2C7D5D35E6",
+  "SourceFiles": [
+    {
+      "Path": "Directory.Build.props",
+      "SHA256": "360B0B76B6E0B8F7CECBECA27EE899D76DBC77FF102E738BC73B36FFC3143B92"
+    },
+    {
+      "Path": "src/MinasisUI/ActionSurfaces.cs",
+      "SHA256": "7CCF8CC38C1B01CA30F212C752FE8EF0597D8C0B73DEDB3A36BF10E3E4D9C4F9"
+    },
+    {
+      "Path": "src/MinasisUI/CommandInput.cs",
+      "SHA256": "A7F224A7BAD53D083419CD67FE8701C3E3AE3B3536FE51617A4C8FDDC6D36021"
+    },
+    {
+      "Path": "src/MinasisUI/CommandInputNoWrap.cs",
+      "SHA256": "E46D24564FAED7493648765C2C46ADA3D93EA3B5E5FDB8D5853FBCC9F91A4A8F"
+    },
+    {
+      "Path": "src/MinasisUI/ControlDrawing.cs",
+      "SHA256": "A332E0D7DD6B1804C748251160F71CEFADC64C07FB737E06B832992AA998872C"
+    },
+    {
+      "Path": "src/MinasisUI/Feedback.cs",
+      "SHA256": "2B7805F470BB6E94E3D6552A0DA711401FB79CD7ADE4AAE6B52BA11C03D0B1EC"
+    },
+    {
+      "Path": "src/MinasisUI/Fields.cs",
+      "SHA256": "05DF8FDDF1F0DD6398D768620C3E994451415A3D7CC371E6AA022A1267F9F24A"
+    },
+    {
+      "Path": "src/MinasisUI/GroupedFields.cs",
+      "SHA256": "070CDE770C23D5F8621B6F70879AAD2A85659A65900A71FE43B500458E83E5B7"
+    },
+    {
+      "Path": "src/MinasisUI/IconBrowser.cs",
+      "SHA256": "154652BB7FA0A4ABFB750C1394AF4363496E495CB6174B0D0BE0EC619BCB68C6"
+    },
+    {
+      "Path": "src/MinasisUI/MinasisUI.csproj",
+      "SHA256": "D2A58E74C3896C20208F59C2FB1D02053E352695F79CA71142B1EA786A4ACC5E"
+    },
+    {
+      "Path": "src/MinasisUI/NumericFeedback.cs",
+      "SHA256": "B41DC07CB800DFDEB36521FFE4E1ED24C832B309FA78C3BF18B42E45AD29DA86"
+    },
+    {
+      "Path": "src/MinasisUI/ResetValueButton.cs",
+      "SHA256": "543D082C6CACC50D7D0D4B0D12CF330F4E4DB1369394AD00872D793C9A1EEC0D"
+    },
+    {
+      "Path": "src/MinasisUI/ScopedModalOverlay.cs",
+      "SHA256": "4A1B45099AE17266D7CD9F76C077CEF67A2BD99B2C9EC7216688A2DD236D193F"
+    },
+    {
+      "Path": "src/MinasisUI/SearchInput.cs",
+      "SHA256": "18F8F8A7BBDC19390BF33D753C750C7A7B2F164C29A1F460833BFDCC4F25D5BE"
+    },
+    {
+      "Path": "src/MinasisUI/SettingsLayout.cs",
+      "SHA256": "6D9FD72E8C50423267B723C179FFF7E579F9908606A06AD86215ACF51A8EA47E"
+    },
+    {
+      "Path": "src/MinasisUI/SoftCharcoalFlow/Colors.cs",
+      "SHA256": "BD240A16212F4C1BCFA3A99EF968CE52A98F4E40EF9627B62E04E0440A0E9A26"
+    },
+    {
+      "Path": "src/MinasisUI/SoftCharcoalFlow/Components.cs",
+      "SHA256": "7A92063C3363AD53EAA9E2D5601CECEBF95B24E26C66ADA4246A8337B6D32986"
+    },
+    {
+      "Path": "src/MinasisUI/SoftCharcoalFlow/FlowComponents.cs",
+      "SHA256": "CBA1061D50D484AE59349C5263A40909D97E6718A06CFD78FC4C9B6FDEA30137"
+    },
+    {
+      "Path": "src/MinasisUI/SoftCharcoalFlow/Icons.cs",
+      "SHA256": "F1B0AB17FBFE517911EBAF05DC57ECAFFD45B7D7112A3D1161B084F80CB5C047"
+    },
+    {
+      "Path": "src/MinasisUI/SoftCharcoalFlow/Navigation.cs",
+      "SHA256": "087D00CCEEDC6F0F2C0DF4C9FB7D1D9B928EAFE59D1F56DF86CB2422F31AD063"
+    },
+    {
+      "Path": "src/MinasisUI/SoftCharcoalFlow/SharedControls.cs",
+      "SHA256": "7DBB46B8F4FACC525A21BD4FFB4422028F8083FAF2A7735E0B8A24B4D6654A63"
+    },
+    {
+      "Path": "src/MinasisUI/SoftCharcoalFlow/StyleScope.cs",
+      "SHA256": "6BB465DE188864520E2873CA37A3E5095675BFEF03EE2DC69E90097312D85CBD"
+    },
+    {
+      "Path": "src/MinasisUI/SoftCharcoalFlow/Theme.cs",
+      "SHA256": "AFD09C67F95AA388B2C2C9E08C0E297414E2AEEC68B6B2E16B2F86CEC8B17BDB"
+    },
+    {
+      "Path": "src/MinasisUI/SoftCharcoalFlow/Typography.cs",
+      "SHA256": "F85CDC6472996E2F5C7A7031E9E6F942B7BD4E12A00F538F743040D114F563D6"
+    },
+    {
+      "Path": "src/MinasisUI/SoftCharcoalFlow/Ui.cs",
+      "SHA256": "AF7F8D22AB3F9A73FD4CACE76656438552D7981071FBA74997899D583F17C467"
+    },
+    {
+      "Path": "src/MinasisUI/SoftCharcoalFlow/WindowState.cs",
+      "SHA256": "1DBCBE0986F97AB5CDDB23D16ABCDACB770A31691233609D573728027AE4E23C"
+    },
+    {
+      "Path": "src/MinasisUI/StyleScope.cs",
+      "SHA256": "C0264055CB0961EF14D8D52F83F7FE19DCA1D69AC53EA8E215E7E88930D13822"
+    },
+    {
+      "Path": "src/MinasisUI/Theme.cs",
+      "SHA256": "BB78DDD51C18F77892CDA21AACECF16835CAE7280DE12079C73DE96EF9A55BA2"
+    },
+    {
+      "Path": "src/MinasisUI/TwoOptionSwitch.cs",
+      "SHA256": "EBD2610EE2F31BD30C027070707F19FFECE63C376CB5C5EAB68AE9B0CCB3B123"
+    },
+    {
+      "Path": "src/MinasisUI/Ui.cs",
+      "SHA256": "671EEF9C67FF9CC18F6813A81D2925B4DFF734884C3F14BF7C16CAEB89419410"
+    },
+    {
+      "Path": "src/MinasisUI/UiHeadingFonts.cs",
+      "SHA256": "9736C4D298AA012C40444BE5D57D25A312FBED3DEA46617BE16539A8D08FED11"
+    },
+    {
+      "Path": "src/MinasisUI/UiResourceDisposal.cs",
+      "SHA256": "ECDDDE086D2D6EF3B8941AEA2DA288D4A0CCDCD59FDD7843C48FC701B48F565C"
+    },
+    {
+      "Path": "src/MinasisUI/UiRhythm.cs",
+      "SHA256": "50BE9E5DBC735032199F88A0985A07ACCDCC2A10F357870E6BCA3B29CDB568CB"
+    },
+    {
+      "Path": "src/MinasisUI/UndoHistory.cs",
+      "SHA256": "809BD5AF9F407714B6A962967B580B136FFF6E8CF201478D710374F20752926D"
+    },
+    {
+      "Path": "src/MinasisUI/Workspace/WorkspaceAdaptiveColumns.cs",
+      "SHA256": "AF42F3AF5D0FF3336858BF779980F993F7643CA32783C78FE24EA51541B26BF3"
+    },
+    {
+      "Path": "src/MinasisUI/Workspace/WorkspaceComponents.cs",
+      "SHA256": "0FDD7EDA8C7A96B5C31C1EC4B1532F8A7242C3E8CB232E4D67F2A9A43932A1B1"
+    },
+    {
+      "Path": "src/MinasisUI/Workspace/WorkspaceDefinition.cs",
+      "SHA256": "A11FE7922557A94A0ED434747E5F2847D4D2A3A31116066BC701CC28AF115669"
+    },
+    {
+      "Path": "src/MinasisUI/Workspace/WorkspaceDrag.cs",
+      "SHA256": "B59D18F3DF00C6D68A759970423ED300573894C037A4159162EC7DA152D4B884"
+    },
+    {
+      "Path": "src/MinasisUI/Workspace/WorkspaceFeedback.cs",
+      "SHA256": "1D06CCAA826192FB3C9DAD7A97EC1ED50131A6F6228FBC47F2C6E53E1378C7EF"
+    },
+    {
+      "Path": "src/MinasisUI/Workspace/WorkspaceFonts.cs",
+      "SHA256": "D83845A2DC69C22AFD9179DD2D981563340923DD67471A48795A68A75B46806D"
+    },
+    {
+      "Path": "src/MinasisUI/Workspace/WorkspaceList.cs",
+      "SHA256": "6C405B7BDB5188E1679A1E3A199C75F3126EEDDF8549766CEC20CA3CDAF3335B"
+    },
+    {
+      "Path": "src/MinasisUI/Workspace/WorkspaceMenu.cs",
+      "SHA256": "9FCB09CF2D0B70B40F885A18D66BC9B9C029952925B30763EF8841968557A8DB"
+    },
+    {
+      "Path": "src/MinasisUI/Workspace/WorkspacePersistence.cs",
+      "SHA256": "765D5C31AFBA07FE95DDFFB3FD0DE8A397E2E0012B786F53178822FF5BBC8CA7"
+    },
+    {
+      "Path": "src/MinasisUI/Workspace/WorkspaceRows.cs",
+      "SHA256": "D3F198D62A92436F401A180BC0C590485E0178F7E7880826748A7E52978DACAA"
+    },
+    {
+      "Path": "src/MinasisUI/Workspace/WorkspaceSupport.cs",
+      "SHA256": "F22C2B0F8F059FACEA5771C4D2BCAA63A8C688A18CDC47C8E585E2B54D31F963"
+    },
+    {
+      "Path": "src/MinasisUI/Workspace/WorkspaceUi.cs",
+      "SHA256": "2A9B329AEFA5F0C5CA767A36632CA5CA4449728E16587AB08C1FB881C5ABF904"
+    },
+    {
+      "Path": "src/MinasisUI/Workspace/WorkspaceWindow.cs",
+      "SHA256": "616B8D190E75B26AA035C87AB62FEB954436BF55EB9031B9E51DFE7E9880094B"
+    },
+    {
+      "Path": "src/MinasisUI/WrappedCommandEditor.cs",
+      "SHA256": "4D01FF557D36DD178D7BF511A1260CA28E17AC326F7EF80D4E6B06CF8A4E7EAC"
+    }
+  ]
+}
