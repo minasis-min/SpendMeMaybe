@@ -56,18 +56,26 @@ public sealed class Settings
     [JsonPropertyName("IconOnly"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public bool? LegacyIconOnly;
     public float IconSize = 32, TextSize = 18, Spacing = 10, Background = .65f;
+    public int TextFont;
+    public bool TextOutline;
+    public float OutlineStrength = .3f;
+    public Vector4 OutlineColor = new(0, 0, 0, 180f / 255);
     public Vector2 Position = new(150, 150);
     public List<TrackedItem> Items = [];
     public Dictionary<string, float> SettingsColumnWidths = [];
     public bool SettingsSidebarCollapsed;
 
-    public bool RestoreSizing(Settings defaults)
+    public bool RestoreTextStyle(Settings defaults)
     {
-        var iconChanged = RestoreSize(ref IconSize, defaults.IconSize);
-        var textChanged = RestoreSize(ref TextSize, defaults.TextSize);
-        var spacingChanged = RestoreSize(ref Spacing, defaults.Spacing);
-        var backgroundChanged = RestoreSize(ref Background, defaults.Background);
-        return iconChanged || textChanged || spacingChanged || backgroundChanged;
+        if (TextFont == defaults.TextFont && TextSize == defaults.TextSize
+            && TextOutline == defaults.TextOutline && OutlineStrength == defaults.OutlineStrength
+            && OutlineColor == defaults.OutlineColor) return false;
+        TextFont = defaults.TextFont;
+        TextSize = defaults.TextSize;
+        TextOutline = defaults.TextOutline;
+        OutlineStrength = defaults.OutlineStrength;
+        OutlineColor = defaults.OutlineColor;
+        return true;
     }
 
     public static bool RestoreSize(ref float value, float defaultValue)
@@ -93,6 +101,10 @@ public sealed class Settings
         if (Items.Count > 200) throw new InvalidDataException("登録件数が上限を超えています");
         IconSize = Limit(IconSize, 16, 96, 32); TextSize = Limit(TextSize, 10, 40, 18);
         Spacing = Limit(Spacing, 0, 60, 10); Background = Limit(Background, 0, 1, .65f);
+        if (TextFont is not (0 or 1)) TextFont = 0;
+        OutlineStrength = Limit(OutlineStrength, .1f, 3, .3f);
+        OutlineColor = new(Limit(OutlineColor.X, 0, 1, 0), Limit(OutlineColor.Y, 0, 1, 0),
+            Limit(OutlineColor.Z, 0, 1, 0), Limit(OutlineColor.W, 0, 1, 180f / 255));
         Position = new(Limit(Position.X, -30000, 30000, 150), Limit(Position.Y, -30000, 30000, 150));
         var ids = new HashSet<Guid>();
         foreach (var e in Items)

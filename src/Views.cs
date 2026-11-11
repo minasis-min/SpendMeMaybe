@@ -1,6 +1,8 @@
 using System.Numerics;
 using Dalamud.Bindings.ImGui;
 using Dalamud.Interface;
+using Dalamud.Interface.GameFonts;
+using Dalamud.Interface.ManagedFontAtlas;
 using Dalamud.Interface.Textures;
 using Dalamud.Interface.Utility;
 using Dalamud.Plugin;
@@ -19,7 +21,7 @@ public sealed class Views : IDisposable
         [
             Page("registered", "貨幣設定", FontAwesomeIcon.Coins),
             Page("add", "貨幣を追加", FontAwesomeIcon.Plus),
-            new("layout", "レイアウト", FontAwesomeIcon.PaintBrush, [new("placement", "表示・配置"), new("size", "大きさ")]),
+            new("layout", "レイアウト", FontAwesomeIcon.PaintBrush, [new("placement", "配置"), new("size", "スタイル")]),
             new("extras", "追加機能", FontAwesomeIcon.PuzzlePiece, [new("teleport", "テレポ"), new("commands", "コマンド")])
         ]);
     private static WorkspacePage Page(string id, string label, FontAwesomeIcon icon) => new(id, label, icon, []);
@@ -30,6 +32,13 @@ public sealed class Views : IDisposable
     private readonly WindowSystem windows = new("SpendMeMaybe");
     private readonly WorkspaceWindow window;
     private readonly WorkspaceFonts fonts;
+    private readonly IFontHandle axisFont;
+    private static readonly UiChoice[] OverlayFontChoices = [new("default", "Dalamud標準"), new("axis", "FF14 Axis")];
+    private static readonly Vector2[] OutlineDirections =
+    [
+        new(-1, 0), new(1, 0), new(0, -1), new(0, 1),
+        new(-.7071f, -.7071f), new(.7071f, -.7071f), new(-.7071f, .7071f), new(.7071f, .7071f)
+    ];
     private readonly WorkspaceUi[] surfaces;
     private Ui ui => workspace.Controls;
     private static readonly Settings Defaults = new();
@@ -88,6 +97,7 @@ public sealed class Views : IDisposable
         try
         {
             fonts = new(pi);
+            axisFont = pi.UiBuilder.FontAtlas.NewGameFontHandle(new GameFontStyle(GameFontFamily.Axis, 18));
             window = new(workspace, DrawSettingsContent);
             surfaces = [workspace];
             windows.AddWindow(window);
@@ -96,7 +106,7 @@ public sealed class Views : IDisposable
         {
             workspace.Persistence.SaveRequested -= SaveUiPreferences;
             try { windows.RemoveAllWindows(); }
-            finally { UiResourceDisposal.DisposeAll([workspace, fonts]); }
+            finally { UiResourceDisposal.DisposeAll([workspace, fonts, axisFont]); }
             throw;
         }
     }
@@ -335,7 +345,10 @@ public sealed class Views : IDisposable
     {
         if (workspace.State.TabId == "size")
         {
-            workspace.Card("size", "大きさ・背景", 320, DrawSizing, ResetSizing);
+            workspace.Card("text", "文字", 340, DrawTextStyle, ResetTextStyle);
+            workspace.Card("icon", "アイコン", 120, DrawIconStyle);
+            workspace.Card("spacing", "間隔", 120, DrawSpacingStyle);
+            workspace.Card("background", "背景", 120, DrawBackgroundStyle);
             return;
         }
         workspace.Card("layout", "配置と表示", 400, DrawPlacement);
@@ -373,28 +386,35 @@ public sealed class Views : IDisposable
         }
     }
 
-    private void DrawSizing()
+    private void DrawTextStyle()
     {
-        ui.Field("iconsize", "アイコン",
-            () => { if (ui.InputFloat("value", "", ref settings.IconSize, step: 1, min: 16, max: 96)) changed(); },
-            new() { Unit = "px", Reset = () => { if (Settings.RestoreSize(ref settings.IconSize, Defaults.IconSize)) changed(); } });
-        ui.Field("textsize", "文字",
+        if (ui.Dropdown("font", "フォント", ref settings.TextFont, OverlayFontChoices)) changed();
+        ui.Field("textsize", "文字サイズ",
             () => { if (ui.InputFloat("value", "", ref settings.TextSize, step: 1, min: 10, max: 40)) changed(); },
             new() { Unit = "px", Reset = () => { if (Settings.RestoreSize(ref settings.TextSize, Defaults.TextSize)) changed(); } });
+        if (ui.Checkbox("outline", "文字に縁取りを付ける", ref settings.TextOutline)) changed();
+        if (ui.Slider("outline-strength", "縁取りの強さ", ref settings.OutlineStrength, .1f, 3, "%.1f", enabled: settings.TextOutline)) changed();
+        if (ui.ColorInput("outline-color", "縁取りの色", ref settings.OutlineColor, enabled: settings.TextOutline)) changed();
+    }
+
+    private void ResetTextStyle() { if (settings.RestoreTextStyle(Defaults)) changed(); }
+
+    private void DrawIconStyle() =>
+        ui.Field("iconsize", "アイコンサイズ",
+            () => { if (ui.InputFloat("value", "", ref settings.IconSize, step: 1, min: 16, max: 96)) changed(); },
+            new() { Unit = "px", Reset = () => { if (Settings.RestoreSize(ref settings.IconSize, Defaults.IconSize)) changed(); } });
+
+    private void DrawSpacingStyle() =>
         ui.Field("spacing", "項目の間隔",
             () => { if (ui.InputFloat("value", "", ref settings.Spacing, step: 1, min: 0, max: 60)) changed(); },
             new() { Unit = "px", Reset = () => { if (Settings.RestoreSize(ref settings.Spacing, Defaults.Spacing)) changed(); } });
+
+    private void DrawBackgroundStyle() =>
         ui.Field("background", "背景の濃さ", () =>
         {
             var opacity = settings.Background * 100;
             if (ui.InputFloat("value", "", ref opacity, step: 5, min: 0, max: 100)) { settings.Background = opacity / 100; changed(); }
         }, new() { Unit = "%", Reset = () => { if (Settings.RestoreSize(ref settings.Background, Defaults.Background)) changed(); } });
-    }
-
-    private void ResetSizing()
-    {
-        if (settings.RestoreSizing(Defaults)) changed();
-    }
 
     private void Extras()
     {
@@ -466,10 +486,18 @@ public sealed class Views : IDisposable
             positionChanged();
         }
         var scale = ImGuiHelpers.GlobalScale;
-        geometry.Update(measureRows, new(scale, ImGui.GetFontSize(), ImGui.GetFont().GetHashCode(),
-            settings.IconSize, settings.TextSize, settings.Spacing, settings.Direction, settings.IconOnlyHorizontal, settings.CountBeforeIcon), MeasureLabel);
-        var fontScale = settings.TextSize * scale / ImGui.GetFontSize();
+        using var selectedFont = settings.TextFont == 1 && axisFont.Available ? axisFont.Lock() : null;
+        var textFont = selectedFont?.ImFont ?? default;
+        var textSizePx = settings.TextSize * scale;
+        using (workspace.Flow.PushFont(textFont))
+        {
+            var fontSize = ImGui.GetFontSize();
+            geometry.Update(measureRows, new(scale, fontSize, ImGui.GetFont().GetHashCode(),
+                settings.IconSize, settings.TextSize, settings.Spacing, settings.Direction, settings.IconOnlyHorizontal, settings.CountBeforeIcon), MeasureLabel);
+        }
         var iconSize = settings.IconSize * scale;
+        var outlineRadius = settings.TextOutline && settings.OutlineColor.W > 0 ? settings.OutlineStrength * scale : 0;
+        var outlineColor = ImGui.ColorConvertFloat4ToU32(settings.OutlineColor);
         var placements = geometry.Placements;
         var minimum = geometry.Minimum;
         var maximum = geometry.Maximum;
@@ -484,6 +512,11 @@ public sealed class Views : IDisposable
         }
         minimum -= first; maximum -= first;
         if (!hasVisible) { minimum = Vector2.Zero; maximum = new(300 * scale, 30 * scale); }
+        if (outlineRadius > 0 && hasVisible)
+        {
+            minimum -= new Vector2(outlineRadius);
+            maximum += new Vector2(outlineRadius);
+        }
         ImGui.SetNextWindowPos(OverlayAnchor.WindowPosition(settings.Position, minimum, padding, titleHeight), ImGuiCond.Always);
         var windowSize = maximum - minimum + padding * 2 + new Vector2(0, titleHeight);
         ImGui.SetNextWindowSize(Vector2.Max(windowSize, ImGui.GetStyle().WindowMinSize), ImGuiCond.Always);
@@ -512,7 +545,6 @@ public sealed class Views : IDisposable
                 movingThisFrame = true;
             }
             if (movingThisFrame || ImGui.GetIO().KeyAlt) gesture.Cancel();
-            ImGui.SetWindowFontScale(fontScale);
             var contentOrigin = ImGui.GetCursorScreenPos();
             // Use the actual content origin in case the host adjusted window decoration.
             var origin = contentOrigin - minimum;
@@ -557,7 +589,15 @@ public sealed class Views : IDisposable
                 if (wrap != null) draw.AddImage(wrap.Handle, iconPosition, iconPosition + new Vector2(iconSize));
                 else draw.AddText(iconPosition + new Vector2(iconSize * .35f, iconSize * .2f), 0xffffffff, "?");
                 var color = Rules.Highlighted(e, count) ? e.WarningColor : Vector4.One;
-                if (row.Label.Length > 0) draw.AddText(textPosition, ImGui.ColorConvertFloat4ToU32(color), row.Label);
+                if (row.Label.Length > 0)
+                {
+                    using var labelFont = workspace.Flow.PushFont(textFont);
+                    var font = ImGui.GetFont();
+                    if (outlineRadius > 0)
+                        foreach (var direction in OutlineDirections)
+                            draw.AddText(font, textSizePx, textPosition + direction * outlineRadius, outlineColor, row.Label);
+                    draw.AddText(font, textSizePx, textPosition, ImGui.ColorConvertFloat4ToU32(color), row.Label);
+                }
                 ImGui.SetCursorScreenPos(cursor); ImGui.Dummy(size);
             }
             if (!hasVisible && !settings.Locked) ImGui.TextUnformatted("表示する貨幣がありません — 右クリックで設定");
@@ -571,7 +611,7 @@ public sealed class Views : IDisposable
             }
             else if (!ImGui.IsMouseDown(ImGuiMouseButton.Left)) gesture.Cancel();
         }
-        finally { ImGui.SetWindowFontScale(1); ImGui.End(); }
+        finally { ImGui.End(); }
     }
     private void DrawExecutionStatus()
     {
@@ -605,7 +645,7 @@ public sealed class Views : IDisposable
             {
                 workspace.Persistence.SaveRequested -= SaveUiPreferences;
                 try { UpdateSaveStatus(store.SavePending(settings, System.Diagnostics.Stopwatch.GetTimestamp(), flush: true)); }
-                finally { fonts.Dispose(); }
+                finally { UiResourceDisposal.DisposeAll([fonts, axisFont]); }
             }
         }
     }
